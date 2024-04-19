@@ -5,7 +5,7 @@ interface Data {
 export default function Home({ code }: Data) {
 	return (
 		<div class="grid place-items-center h-dvh">
-			<div class="bg-white grid place-items-center relative w-80 h-80 roqwunded-2xl shadow-2xl overflow-hidden">
+			<div class="bg-white grid place-items-center relative w-80 h-80 rounded-2xl shadow-2xl overflow-hidden">
 				<div class="bg-[url('/sashimi.jpg')] bg-cover bg-center absolute top-0 w-full h-40">
 				</div>
 				<div class="w-full h-32 px-6 absolute bottom-4">
