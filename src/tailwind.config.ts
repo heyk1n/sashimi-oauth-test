@@ -4,4 +4,11 @@ export default {
 	content: [
 		"{routes,islands,components}/**/*.{ts,tsx}",
 	],
+	theme: {
+		extend: {
+			fontFamily: {
+				'indieflower': ["indieflower", "sans-serif"]
+			}
+		}
+	}
 } satisfies Config;

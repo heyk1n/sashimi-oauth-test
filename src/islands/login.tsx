@@ -3,10 +3,10 @@ const authorizeUrl =
 
 export default function Login() {
 	return (
-		<div class="grid place-items-center h-dvh">
+		<div class="font-indieflower touch-none grid place-items-center h-dvh">
 			<div class="bg-white w-64 h-24 rounded-lg shadow-lg">
 				<div class="w-full h-full grid place-items-center relative">
-					<p class="absolute">Login to verify your account!</p>
+					<p class="absolute font-extrabold">Login to verify your account!</p>
 					<a class="absolute bottom-0" href={authorizeUrl}>
 						<div class="bg-purple-400 text-xs px-2 py-1 rounded-lg">
 							Login with Discord
