@@ -6,8 +6,8 @@ export const handler: Handlers = {
 		const headers = new Headers();
 		headers.set("Location", "/");
 
-		deleteCookie(headers, "access_token");
-		deleteCookie(headers, "refresh_token");
+		deleteCookie(headers, "access_token", { path: "/" });
+		deleteCookie(headers, "refresh_token", { path: "/" });
 
 		return new Response(null, {
 			headers,

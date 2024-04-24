@@ -17,7 +17,7 @@ export default function Home({ code }: Data) {
 							? "Sebelum masuk, verifikasi akun dulu ya! :3"
 							: "Kode ini tidak valid atau sudah kedaluarsa"}
 					</p>
-					<form>
+					<form method="post" action="/api/verify">
 						<div class="w-full h-16 grid place-items-center">
 							<input
 								name="code"

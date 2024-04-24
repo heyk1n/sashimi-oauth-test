@@ -7,8 +7,8 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				'babydoll': ["babydoll", "sans-serif"]
-			}
-		}
-	}
+				"babydoll": ["babydoll", "sans-serif"],
+			},
+		},
+	},
 } satisfies Config;

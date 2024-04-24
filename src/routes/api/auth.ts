@@ -10,14 +10,14 @@ export const handler: Handlers = {
 		const url = new URL(req.url);
 		const code = url.searchParams.get("code")!;
 
-		const { access_token, expires_in, refresh_token } = await api.oauth2
+		const exchangeData = await api.oauth2
 			.tokenExchange({
 				client_id: Deno.env.get("DISCORD_ID")!,
 				client_secret: Deno.env.get("DISCORD_SECRET")!,
 				code,
 				grant_type: "authorization_code",
 				redirect_uri:
-					"https://animated-zebra-pvpwg476rq5f6rxx-8000.app.github.dev/auth",
+					"https://animated-zebra-pvpwg476rq5f6rxx-8000.app.github.dev/api/auth",
 			});
 
 		const headers = new Headers();
@@ -25,12 +25,13 @@ export const handler: Handlers = {
 
 		setCookie(headers, {
 			name: "access_token",
-			value: access_token,
-			maxAge: expires_in,
+			value: exchangeData.access_token,
+			path: "/",
 		});
 		setCookie(headers, {
 			name: "refresh_token",
-			value: refresh_token,
+			value: exchangeData.refresh_token,
+			path: "/",
 		});
 
 		return new Response(null, {
