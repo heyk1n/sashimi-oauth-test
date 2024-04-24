@@ -1,5 +1,21 @@
-const authorizeUrl =
-	"https://discord.com/oauth2/authorize?client_id=1229336138473537596&response_type=code&redirect_uri=https%3A%2F%2Fanimated-zebra-pvpwg476rq5f6rxx-8000.app.github.dev%2Fapi%2Fauth&scope=identify+guilds.members.read";
+import { OAuth2Routes, OAuth2Scopes } from "@discordjs/core";
+
+const legacyAuthorizeUrl = new URL(
+	"https://discord.com/oauth2/authorize?client_id=1229336138473537596&response_type=code&scope=identify+guilds.members.read",
+);
+const authorizeUrl = new URL(OAuth2Routes.authorizationURL);
+const scopes: OAuth2Scopes[] = [
+	OAuth2Scopes.Identify,
+	OAuth2Scopes.GuildsMembersRead,
+];
+
+authorizeUrl.searchParams.set("client_id", Deno.env.get("DISCORD_ID")!);
+authorizeUrl.searchParams.set("response_type", "code");
+authorizeUrl.searchParams.set("scope", scopes.join(" "));
+authorizeUrl.searchParams.set(
+	"redirect_uri",
+	`${Deno.env.get("REDIRECT_URL")}/api/auth`,
+);
 
 export default function () {
 	return (
@@ -9,7 +25,7 @@ export default function () {
 					<p class="absolute font-extrabold">
 						Login to verify your account!
 					</p>
-					<a class="absolute bottom-0" href={authorizeUrl}>
+					<a class="absolute bottom-0" href={authorizeUrl.toString()}>
 						<div class="bg-purple-400 text-xs px-2 py-1 rounded-lg">
 							Login with Discord
 						</div>

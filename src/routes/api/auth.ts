@@ -16,8 +16,7 @@ export const handler: Handlers = {
 				client_secret: Deno.env.get("DISCORD_SECRET")!,
 				code,
 				grant_type: "authorization_code",
-				redirect_uri:
-					"https://animated-zebra-pvpwg476rq5f6rxx-8000.app.github.dev/api/auth",
+				redirect_uri: `${Deno.env.get("REDIRECT_URL")}/api/auth`,
 			});
 
 		const userClient = new API(
