@@ -4,7 +4,7 @@ interface Data {
 
 export default function Home({ code }: Data) {
 	return (
-		<div class="font-indieflower grid place-items-center h-dvh select-none">
+		<div class="font-babydoll touch-none grid place-items-center h-dvh select-none">
 			<div class="bg-white grid place-items-center relative w-80 h-[345px] rounded-2xl shadow-2xl overflow-hidden">
 				<div class="bg-[url('/sashimi.jpg')] bg-cover bg-center absolute top-0 w-full h-40">
 				</div>
@@ -18,7 +18,7 @@ export default function Home({ code }: Data) {
 							: "Kode ini tidak valid atau sudah kedaluarsa"}
 					</p>
 					<form>
-						<div class="font-sans italic w-full h-16 grid place-items-center">
+						<div class="w-full h-16 grid place-items-center">
 							<input
 								name="code"
 								value={code ?? ""}

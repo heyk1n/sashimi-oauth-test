@@ -3,7 +3,7 @@ const authorizeUrl =
 
 export default function Login() {
 	return (
-		<div class="select-none font-indieflower grid place-items-center h-dvh">
+		<div class="touch-none select-none font-babydoll grid place-items-center h-dvh">
 			<div class="bg-white w-64 h-24 rounded-lg shadow-lg">
 				<div class="w-full h-full grid place-items-center relative">
 					<p class="absolute font-extrabold">Login to verify your account!</p>

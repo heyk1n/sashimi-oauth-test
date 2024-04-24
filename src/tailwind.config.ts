@@ -7,7 +7,7 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				'indieflower': ["indieflower", "sans-serif"]
+				'babydoll': ["babydoll", "sans-serif"]
 			}
 		}
 	}

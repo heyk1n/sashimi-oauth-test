@@ -4,7 +4,7 @@
 
 @layer base {
     @font-face {
-        font-family: 'indieflower';
-        src: url(/IndieFlower.ttf) format('truetype');
+        font-family: 'babydoll';
+        src: url(/babydoll.ttf) format('truetype');
     }
 }
