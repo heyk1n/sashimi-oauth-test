@@ -26,6 +26,7 @@ export const handler: Handlers = {
 		setCookie(headers, {
 			name: "access_token",
 			value: exchangeData.access_token,
+			maxAge: exchangeData.expires_in,
 			path: "/",
 		});
 		setCookie(headers, {

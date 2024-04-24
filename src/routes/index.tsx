@@ -10,13 +10,21 @@ interface Data {
 }
 
 export const handler: Handlers<Data> = {
-	GET(req, ctx) {
-		const url = new URL(req.url);
-		const code = url.searchParams.get("code");
+	async POST(req, ctx) {
+		const body = await req.formData();
+		const code = body.get("code") as string;
 		const cookies = getCookies(req.headers);
 
 		return ctx.render({
-			code: url.searchParams.get("code"),
+			code,
+			accessToken: cookies["access_token"] ?? null,
+		});
+	},
+	async GET(req, ctx) {
+		const cookies = getCookies(req.headers);
+
+		return ctx.render({
+			code: null,
 			accessToken: cookies["access_token"] ?? null,
 		});
 	},

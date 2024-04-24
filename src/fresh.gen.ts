@@ -6,7 +6,6 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_auth from "./routes/api/auth.ts";
 import * as $api_deauth from "./routes/api/deauth.ts";
-import * as $api_verify from "./routes/api/verify.ts";
 import * as $index from "./routes/index.tsx";
 import * as $v2 from "./routes/v2.tsx";
 import * as $login from "./islands/login.tsx";
@@ -19,7 +18,6 @@ const manifest = {
 		"./routes/_app.tsx": $_app,
 		"./routes/api/auth.ts": $api_auth,
 		"./routes/api/deauth.ts": $api_deauth,
-		"./routes/api/verify.ts": $api_verify,
 		"./routes/index.tsx": $index,
 		"./routes/v2.tsx": $v2,
 	},
