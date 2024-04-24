@@ -10,6 +10,7 @@ import * as $index from "./routes/index.tsx";
 import * as $v2 from "./routes/v2.tsx";
 import * as $verified from "./routes/verified.tsx";
 import * as $login from "./islands/login.tsx";
+import * as $verified_1 from "./islands/verified.tsx";
 import * as $verify from "./islands/verify.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -25,6 +26,7 @@ const manifest = {
 	},
 	islands: {
 		"./islands/login.tsx": $login,
+		"./islands/verified.tsx": $verified_1,
 		"./islands/verify.tsx": $verify,
 	},
 	baseUrl: import.meta.url,

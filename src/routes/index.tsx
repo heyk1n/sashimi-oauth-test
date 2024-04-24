@@ -1,12 +1,16 @@
+import { REST } from "@discordjs/rest";
+import { API, type APIGuildMember, type Snowflake } from "@discordjs/core";
+
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { getCookies } from "$std/http/cookie.ts";
 
 import Login from "../islands/login.tsx";
 import Verify from "../islands/verify.tsx";
+import Verified from "../islands/verified.tsx";
 
 interface Data {
-	accessToken: string | null;
 	code: string | null;
+	member?: APIGuildMember;
 }
 
 export const handler: Handlers<Data> = {
@@ -14,28 +18,56 @@ export const handler: Handlers<Data> = {
 		const body = await req.formData();
 		const code = body.get("code") as string;
 		const cookies = getCookies(req.headers);
+		const VALID_CODE = "kitsunee";
 
-		return ctx.render({
-			code,
-			accessToken: cookies["access_token"] ?? null,
-		});
+		const api = new API(
+			new REST().setToken(Deno.env.get("DISCORD_TOKEN")!),
+		);
+
+		if (code === VALID_CODE) {
+			await api.guilds.addRoleToMember(
+				Deno.env.get("DISCORD_GUILD_ID")!,
+				cookies["user_id"],
+				Deno.env.get("DISCORD_MEMBER_ROLE_ID")!,
+			);
+
+			return ctx.render({
+				code: null,
+				member: await getMember(cookies["access_token"]),
+			});
+		} else {
+			return ctx.render({
+				code,
+				member: await getMember(cookies["access_token"]),
+			});
+		}
 	},
-	GET(req, ctx) {
+	async GET(req, ctx) {
 		const cookies = getCookies(req.headers);
+		const accessToken = cookies["access_token"];
 
 		return ctx.render({
 			code: null,
-			accessToken: cookies["access_token"] ?? null,
+			member: accessToken ? await getMember(accessToken) : undefined,
 		});
 	},
 };
 
 export default function Home({ data }: PageProps<Data>) {
-	const { accessToken, code } = data;
+	const { member, code } = data;
 
-	if (!accessToken) {
+	if (!member) {
 		return <Login />;
 	} else {
-		return <Verify code={code} />;
+		if (member.roles.includes(Deno.env.get("DISCORD_MEMBER_ROLE_ID")!)) {
+			return <Verified />;
+		} else {
+			return <Verify code={code} />;
+		}
 	}
+}
+
+async function getMember(token: string): Promise<APIGuildMember> {
+	const api = new API(new REST({ authPrefix: "Bearer" }).setToken(token));
+	return await api.users.getGuildMember(Deno.env.get("DISCORD_GUILD_ID")!);
 }

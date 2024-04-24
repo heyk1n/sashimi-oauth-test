@@ -10,7 +10,7 @@ export const handler: Handlers = {
 		const url = new URL(req.url);
 		const code = url.searchParams.get("code")!;
 
-		const exchangeData = await api.oauth2
+		const { access_token, expires_in, refresh_token } = await api.oauth2
 			.tokenExchange({
 				client_id: Deno.env.get("DISCORD_ID")!,
 				client_secret: Deno.env.get("DISCORD_SECRET")!,
@@ -20,18 +20,28 @@ export const handler: Handlers = {
 					"https://animated-zebra-pvpwg476rq5f6rxx-8000.app.github.dev/api/auth",
 			});
 
+		const userClient = new API(
+			new REST({ authPrefix: "Bearer" }).setToken(access_token),
+		);
+		const currentUser = await userClient.users.getCurrent();
+
 		const headers = new Headers();
 		headers.set("Location", "/");
 
 		setCookie(headers, {
+			name: "user_id",
+			value: currentUser.id,
+			path: "/",
+		});
+		setCookie(headers, {
 			name: "access_token",
-			value: exchangeData.access_token,
-			maxAge: exchangeData.expires_in,
+			value: access_token,
+			maxAge: expires_in,
 			path: "/",
 		});
 		setCookie(headers, {
 			name: "refresh_token",
-			value: exchangeData.refresh_token,
+			value: refresh_token,
 			path: "/",
 		});
 
