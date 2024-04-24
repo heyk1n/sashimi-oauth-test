@@ -20,7 +20,7 @@ export const handler: Handlers<Data> = {
 			accessToken: cookies["access_token"] ?? null,
 		});
 	},
-	async GET(req, ctx) {
+	GET(req, ctx) {
 		const cookies = getCookies(req.headers);
 
 		return ctx.render({
