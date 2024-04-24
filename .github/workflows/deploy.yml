@@ -24,11 +24,11 @@ jobs:
           deno-version: v1.x
 
       - name: Build step
-        run: "deno task build && deno lint && deno fmt --check && deno check src/main.ts"
+        run: "deno check src/main.ts && deno lint && deno fmt --check"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "kin-sashimi-oauth-test"
           entrypoint: "src/main.ts"
-          root: "."
+          root: ""
