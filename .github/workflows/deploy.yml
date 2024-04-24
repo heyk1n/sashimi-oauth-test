@@ -34,3 +34,5 @@ jobs:
 
       - name: Upload to Deno Deploy
         run: deployctl deploy --p=kin-sashimi-oauth-test src/main.ts
+        env:
+          DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
