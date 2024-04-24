@@ -8,6 +8,7 @@ import * as $api_auth from "./routes/api/auth.ts";
 import * as $api_deauth from "./routes/api/deauth.ts";
 import * as $index from "./routes/index.tsx";
 import * as $v2 from "./routes/v2.tsx";
+import * as $verified from "./routes/verified.tsx";
 import * as $login from "./islands/login.tsx";
 import * as $verify from "./islands/verify.tsx";
 import { type Manifest } from "$fresh/server.ts";
@@ -20,6 +21,7 @@ const manifest = {
 		"./routes/api/deauth.ts": $api_deauth,
 		"./routes/index.tsx": $index,
 		"./routes/v2.tsx": $v2,
+		"./routes/verified.tsx": $verified,
 	},
 	islands: {
 		"./islands/login.tsx": $login,

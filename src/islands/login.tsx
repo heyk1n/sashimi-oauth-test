@@ -1,7 +1,7 @@
 const authorizeUrl =
 	"https://discord.com/oauth2/authorize?client_id=1229336138473537596&response_type=code&redirect_uri=https%3A%2F%2Fanimated-zebra-pvpwg476rq5f6rxx-8000.app.github.dev%2Fapi%2Fauth&scope=identify+guilds.members.read";
 
-export default function Login() {
+export default function () {
 	return (
 		<div class="touch-none select-none font-babydoll grid place-items-center h-dvh">
 			<div class="bg-white w-64 h-24 rounded-lg shadow-lg">

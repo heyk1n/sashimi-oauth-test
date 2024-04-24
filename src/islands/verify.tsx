@@ -2,7 +2,7 @@ interface Data {
 	code: string | null;
 }
 
-export default function Home({ code }: Data) {
+export default function ({ code }: Data) {
 	return (
 		<div class="font-babydoll touch-none grid place-items-center h-dvh select-none">
 			<div class="bg-white grid place-items-center relative w-80 h-[345px] rounded-2xl shadow-2xl overflow-hidden">
