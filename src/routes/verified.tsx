@@ -1,7 +1,7 @@
 export default function () {
 	return (
 		<div class="grid place-items-center h-dvh">
-			<div class="bg-white rounded-lg shadow-2xl w-72 font-babydoll space-y-3 pb-3">
+			<div class="bg-white rounded-lg shadow-2xl w-72 overflow-hidden font-babydoll space-y-3 pb-3">
 				<div class="w-full h-32 bg-[url('/sashimi.jpg')] bg-cover bg-center">
 				</div>
 				<div class="grid place-items-center">
