@@ -9,6 +9,9 @@
 		"preview": "deno run -A src/main.ts",
 		"update": "deno run -A -r https://fresh.deno.dev/update ."
 	},
+	"unstable": [
+		"kv"
+	],
 	"lint": {
 		"rules": {
 			"tags": [

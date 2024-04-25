@@ -10,56 +10,103 @@ import Verified from "../islands/verified.tsx";
 
 interface Data {
 	code: string | null;
-	member?: APIGuildMember;
+	isVerified: boolean;
+	isLoggedIn: boolean;
 }
 
 export const handler: Handlers<Data> = {
 	async POST(req, ctx) {
 		const body = await req.formData();
 		const code = body.get("code") as string;
-		const cookies = getCookies(req.headers);
 		const VALID_CODE = "kitsunee";
 
-		const api = new API(
-			new REST().setToken(Deno.env.get("DISCORD_TOKEN")!),
-		);
+		const cookies = getCookies(req.headers);
+		const token = cookies["token"];
 
-		if (code === VALID_CODE) {
-			await api.guilds.addRoleToMember(
-				Deno.env.get("DISCORD_GUILD_ID")!,
-				cookies["user_id"],
-				Deno.env.get("DISCORD_MEMBER_ROLE_ID")!,
-			);
+		if (token) {
+			const kv = await Deno.openKv();
+			const kvKey = ["users", token];
 
-			return ctx.render({
-				code: null,
-				member: await getMember(cookies["access_token"]),
-			});
+			const isVerified = await kv.get<boolean>([...kvKey, "isVerified"]);
+
+			if (!isVerified.value) {
+				const userId = await kv.get<Snowflake>([...kvKey, "userId"]);
+
+				if (code === VALID_CODE) {
+					const api = new API(
+						new REST().setToken(Deno.env.get("DISCORD_TOKEN")!),
+					);
+					await api.guilds.addRoleToMember(
+						Deno.env.get("DISCORD_GUILD_ID")!,
+						userId.value!,
+						Deno.env.get("DISCORD_MEMBER_ROLE_ID")!,
+					);
+
+					const updatedVerified = true;
+
+					await kv.set([...kvKey, "isVerified"], updatedVerified);
+
+					return ctx.render({
+						isVerified: updatedVerified,
+						isLoggedIn: true,
+						code: null,
+					});
+				} else {
+					return ctx.render({
+						isVerified: false,
+						isLoggedIn: true,
+						code,
+					});
+				}
+			} else {
+				return ctx.render({
+					isVerified: isVerified.value,
+					isLoggedIn: true,
+					code: null,
+				});
+			}
 		} else {
 			return ctx.render({
-				code,
-				member: await getMember(cookies["access_token"]),
+				isVerified: false,
+				isLoggedIn: false,
+				code: null,
 			});
 		}
 	},
 	async GET(req, ctx) {
 		const cookies = getCookies(req.headers);
-		const accessToken = cookies["access_token"];
+		const token = cookies["token"];
 
-		return ctx.render({
-			code: null,
-			member: accessToken ? await getMember(accessToken) : undefined,
-		});
+		if (token) {
+			const kv = await Deno.openKv();
+			const isVerified = await kv.get<boolean>([
+				"users",
+				token,
+				"isVerified",
+			]);
+
+			return ctx.render({
+				isVerified: isVerified.value!,
+				isLoggedIn: true,
+				code: null,
+			});
+		} else {
+			return ctx.render({
+				isVerified: false,
+				isLoggedIn: false,
+				code: null,
+			});
+		}
 	},
 };
 
 export default function Home({ data }: PageProps<Data>) {
-	const { member, code } = data;
+	const { isVerified, isLoggedIn, code } = data;
 
-	if (!member) {
+	if (!isLoggedIn) {
 		return <Login />;
 	} else {
-		if (member.roles.includes(Deno.env.get("DISCORD_MEMBER_ROLE_ID")!)) {
+		if (isVerified) {
 			return <Verified />;
 		} else {
 			return <Verify code={code} />;

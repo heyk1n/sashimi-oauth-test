@@ -10,7 +10,7 @@ export const handler: Handlers = {
 		const url = new URL(req.url);
 		const code = url.searchParams.get("code")!;
 
-		const { access_token, expires_in, refresh_token } = await api.oauth2
+		const { access_token } = await api.oauth2
 			.tokenExchange({
 				client_id: Deno.env.get("DISCORD_ID")!,
 				client_secret: Deno.env.get("DISCORD_SECRET")!,
@@ -22,27 +22,33 @@ export const handler: Handlers = {
 		const userClient = new API(
 			new REST({ authPrefix: "Bearer" }).setToken(access_token),
 		);
-		const currentUser = await userClient.users.getCurrent();
+		const member = await userClient.users.getGuildMember(
+			Deno.env.get("DISCORD_GUILD_ID")!,
+		);
+		const isVerified = member.roles.includes(
+			Deno.env.get("DISCORD_MEMBER_ROLE_ID")!,
+		);
+
+		const token = `sashimi_${crypto.randomUUID()}`;
+
+		const kv = await Deno.openKv();
+		const atomic = kv.atomic();
+		const kvKey = ["users", token];
+
+		atomic.set([...kvKey, "userId"], member.user!.id);
+		atomic.set([...kvKey, "isVerified"], isVerified);
 
 		const headers = new Headers();
 		headers.set("Location", "/");
 
 		setCookie(headers, {
-			name: "user_id",
-			value: currentUser.id,
+			name: "token",
+			value: token,
+			maxAge: 86400,
 			path: "/",
 		});
-		setCookie(headers, {
-			name: "access_token",
-			value: access_token,
-			maxAge: expires_in,
-			path: "/",
-		});
-		setCookie(headers, {
-			name: "refresh_token",
-			value: refresh_token,
-			path: "/",
-		});
+
+		await atomic.commit();
 
 		return new Response(null, {
 			headers,
