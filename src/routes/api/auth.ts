@@ -1,4 +1,4 @@
-import { API } from "@discordjs/core";
+import { API, type APIUser } from "@discordjs/core";
 import { REST } from "@discordjs/rest";
 import { Handlers } from "$fresh/server.ts";
 import { setCookie, STATUS_CODE } from "$std/http/mod.ts";
@@ -35,11 +35,17 @@ export const handler: Handlers = {
 		const atomic = kv.atomic();
 		const kvKey = ["users", token];
 
-		atomic.set([...kvKey, "userId"], member.user!.id);
+		atomic.set(
+			[...kvKey, "user"],
+			{
+				id: member.user!.id,
+				avatar: member.user!.avatar,
+			} satisfies Pick<APIUser, "id" | "avatar">,
+		);
 		atomic.set([...kvKey, "isVerified"], isVerified);
 
 		const headers = new Headers();
-		headers.set("Location", "/");
+		headers.set("Location", "/v2");
 
 		setCookie(headers, {
 			name: "token",

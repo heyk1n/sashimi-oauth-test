@@ -7,7 +7,7 @@ import * as $_app from "./routes/_app.tsx";
 import * as $api_auth from "./routes/api/auth.ts";
 import * as $api_deauth from "./routes/api/deauth.ts";
 import * as $index from "./routes/index.tsx";
-import * as $v2 from "./routes/v2/index.tsx";
+import * as $v2_index from "./routes/v2/index.tsx";
 import * as $verified from "./routes/verified.tsx";
 import * as $login from "./islands/login.tsx";
 import * as $verified_1 from "./islands/verified.tsx";
@@ -21,7 +21,7 @@ const manifest = {
 		"./routes/api/auth.ts": $api_auth,
 		"./routes/api/deauth.ts": $api_deauth,
 		"./routes/index.tsx": $index,
-		"./routes/v2.tsx": $v2,
+		"./routes/v2/index.tsx": $v2_index,
 		"./routes/verified.tsx": $verified,
 	},
 	islands: {

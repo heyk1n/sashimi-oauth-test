@@ -9,6 +9,8 @@ export const handler: Handlers = {
 		const cookies = getCookies(req.headers);
 		const token = cookies["token"];
 
+		// TODO(@heyk1n): fix undefined token
+
 		const kv = await Deno.openKv();
 		await kv.delete(["users", token]);
 
