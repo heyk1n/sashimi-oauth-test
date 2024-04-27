@@ -3,18 +3,19 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 
 interface Data {
 	code: string;
+	loggedIn: boolean;
 }
 
 export const handler: Handlers<Data> = {
 	GET(req, ctx) {
 		const url = new URL(req.url);
 		const code = url.searchParams.get("code") ?? "";
-		return ctx.render({ code });
+		return ctx.render({ code, loggedIn: false });
 	},
 };
 
 export default function Home({ data }: PageProps<Data>) {
-	const { code } = data;
+	const { code, loggedIn } = data;
 
 	return (
 		<>
